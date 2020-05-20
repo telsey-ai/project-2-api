@@ -1,4 +1,6 @@
+'use strict'
 const mongoose = require('mongoose')
+const discSchema = require('./disc')
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -10,7 +12,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  token: String
+  token: {
+    type: String
+  },
+  bag: [discSchema]
 }, {
   timestamps: true,
   toObject: {
