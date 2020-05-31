@@ -91,7 +91,7 @@ router.patch('/disc/:id', requireToken, removeBlanks, (req, res, next) => {
     .then(disc => {
       // pass the `req` object and the Mongoose record to `requireOwnership`
       // it will throw an error if the current user isn't the owner
-      requireOwnership(req, disc)
+      // requireOwnership(req, disc)
 
       // pass the result of Mongoose's `.update` to the next `.then`
       return disc.updateOne(req.body.disc)
@@ -105,16 +105,32 @@ router.patch('/disc/:id', requireToken, removeBlanks, (req, res, next) => {
 // DESTROY
 // DELETE /examples/5a7db6c74d55bc51bdf39793
 router.delete('/disc/:id', requireToken, (req, res, next) => {
-  console.log(req.params)
-  User.findById(req.params.id)
+  console.log('Disc: ', Disc)
+  console.log('User: ', User)
+  console.log('req params', req.params)
+  console.log('req.params.id', req.params.id)
+
+  // req.body.disc.owner = req.user.id
+  // const discDel = req.body.disc
+  // let discIndex
+
+  Disc.findById(req.params.id)
     .then(console.log)
-    .then(handle404)
-    .then(disc => {
-      // throw an error if current user doesn't own `example`
-      requireOwnership(req, disc)
-      // delete the example ONLY IF the above didn't throw
-      disc.deleteOne()
-    })
+  // User.findById(req.params.id)
+  //   .then(handle404)
+  //   .then(user => {
+  //     console.log(user)
+  //     discIndex = user.bag.indexOf(disc => disc._id === req.params)
+  //     user.bag[discIndex].deleteOne()
+  //     // user.bag.splice(discIndex, 1)
+  //     // user.save()
+  //   })
+    // .then(disc => {
+    //   // throw an error if current user doesn't own `example`
+    //   requireOwnership(req, disc)
+    //   // delete the example ONLY IF the above didn't throw
+    //   disc.deleteOne()
+    // })
     // send back 204 and no content if the deletion succeeded
     .then(() => res.sendStatus(204))
     // if an error occurs, pass it to the handler

@@ -6,14 +6,13 @@ URL_PATH="/disc"
 curl "${API}${URL_PATH}/${ID}" \
   --include \
   --request DELETE \
-  --header "Authorization: Bearer ${TOKEN}" \
-  --data '{
-    "disc": {
-      "make": "'"${MAKE}"'",
-      "model": "'"${MODEL}"'",
-      "weight": "'"${WEIGHT}"'"
-    }
-  }'
+  --header "Content-Type: application/json" \
+  --header "Authorization: Bearer ${TOKEN}" 
+  # --data '{
+  #   "disc": {
+  #     "_id": "'"${DISCID}"'"
+  #   }
+  # }'
 
 
 echo
