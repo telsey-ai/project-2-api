@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
   token: {
     type: String
   },
-  bag: [discSchema]
+  bag: [discSchema.schema]
 }, {
   timestamps: true,
   toObject: {

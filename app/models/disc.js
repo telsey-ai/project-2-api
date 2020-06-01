@@ -25,4 +25,4 @@ const discSchema = new mongoose.Schema({
 })
 
 // const discSchema = mongoose.model('Disc', discSchema)
-module.exports = discSchema
+module.exports = mongoose.model('Disc', discSchema) // discSchema

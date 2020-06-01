@@ -84,17 +84,22 @@ router.post('/disc', requireToken, (req, res, next) => {
 router.patch('/disc/:id', requireToken, removeBlanks, (req, res, next) => {
   // if the client attempts to change the `owner` property by including a new
   // owner, prevent that by deleting that key/value pair
-  delete req.body.disc.owner
-
-  Disc.findById(req.params.id)
+  // delete req.body.disc.owner
+  const disc = req.body.disc
+  let discIndex
+  User.findById(req.params.id)
     .then(handle404)
-    .then(disc => {
-      // pass the `req` object and the Mongoose record to `requireOwnership`
-      // it will throw an error if the current user isn't the owner
-      // requireOwnership(req, disc)
-
-      // pass the result of Mongoose's `.update` to the next `.then`
-      return disc.updateOne(req.body.disc)
+    .then(user => {
+      // console.log(user)
+      console.log('REQ.BODY.DISC.ID', req.body.disc._id)
+      user.bag.forEach(disc => console.log(disc._id))
+      discIndex = user.bag.findIndex(disc => disc._id == req.body.disc._id)
+      console.log(discIndex)
+      console.log('disc at index', user.bag[discIndex])
+      user.bag[discIndex] =
+      // user.bag[discIndex].deleteOne()
+      console.log(user)
+      user.save()
     })
     // if that succeeded, return 204 and no JSON
     .then(() => res.sendStatus(204))
@@ -105,26 +110,40 @@ router.patch('/disc/:id', requireToken, removeBlanks, (req, res, next) => {
 // DESTROY
 // DELETE /examples/5a7db6c74d55bc51bdf39793
 router.delete('/disc/:id', requireToken, (req, res, next) => {
-  console.log('Disc: ', Disc)
-  console.log('User: ', User)
-  console.log('req params', req.params)
-  console.log('req.params.id', req.params.id)
+  // console.log('Disc: ', Disc)
+  // console.log('User: ', User)
+  // console.log('req params', req.params)
+  // console.log('req.params.id', req.params.id)
 
   // req.body.disc.owner = req.user.id
   // const discDel = req.body.disc
-  // let discIndex
-
-  Disc.findById(req.params.id)
-    .then(console.log)
+  let discIndex
+  // Disc.estimatedDocumentCount()
+  //   .then(console.log)
+  // User.estimatedDocumentCount()
+  //   .then(console.log)
   // User.findById(req.params.id)
-  //   .then(handle404)
   //   .then(user => {
   //     console.log(user)
-  //     discIndex = user.bag.indexOf(disc => disc._id === req.params)
-  //     user.bag[discIndex].deleteOne()
-  //     // user.bag.splice(discIndex, 1)
-  //     // user.save()
+  //     user.bag.update({ _id: req.body.disc._id }, { "$pull": { "d"}})
   //   })
+  // Dive.update({ _id: diveId }, { "$pull": { "divers": { "user": userIdToRemove } }}, { safe: true, multi:true }, function(err, obj) {
+  //   //do something smart
+  // });
+  User.findById(req.params.id)
+    .then(handle404)
+    .then(user => {
+      // console.log(user)
+      console.log('REQ.BODY.DISC.ID', req.body.disc._id)
+      user.bag.forEach(disc => console.log(disc._id))
+      discIndex = user.bag.findIndex(disc => disc._id == req.body.disc._id)
+      console.log(discIndex)
+      console.log('disc at index', user.bag[discIndex])
+      // user.bag[discIndex].deleteOne()
+      user.bag.splice(discIndex, 1)
+      console.log(user)
+      user.save()
+    })
     // .then(disc => {
     //   // throw an error if current user doesn't own `example`
     //   requireOwnership(req, disc)
